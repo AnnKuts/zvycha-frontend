@@ -4,6 +4,8 @@ import '../constants/app_colors.dart';
 
 class AppTheme {
   static ThemeData lightTheme = ThemeData(
+    brightness: Brightness.light,
+    scaffoldBackgroundColor: AppColors.background,
     textTheme: GoogleFonts.interTextTheme().copyWith(
       titleLarge: GoogleFonts.comfortaa(
         fontSize: 32,
@@ -17,6 +19,19 @@ class AppTheme {
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primary,
         foregroundColor: AppColors.background,
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        textStyle: GoogleFonts.comfortaa(
+          fontSize: 24,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    ),
+
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: AppColors.primary,
+        side: const BorderSide(color: AppColors.primary, width: 2),
         padding: const EdgeInsets.symmetric(vertical: 16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         textStyle: GoogleFonts.comfortaa(
