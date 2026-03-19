@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../constants/app_colors.dart';
-import '../notifiers/sign_up_notifier.dart';
+import '../notifiers/auth_form_notifier.dart';
 import '../widgets/text_field.dart';
+import '../widgets/password_field.dart';
 import '../widgets/auth_buttons.dart';
 import 'package:go_router/go_router.dart';
 
@@ -13,25 +14,46 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => SignUpNotifier(),
+      create: (_) => AuthFormNotifier(),
       child: const _SignUpView(),
     );
   }
 }
 
-class _SignUpView extends StatelessWidget {
+class _SignUpView extends StatefulWidget {
   const _SignUpView();
 
-  void _handleStatusChange(BuildContext context, SignUpNotifier notifier) {
+  @override
+  State<_SignUpView> createState() => _SignUpViewState();
+}
+
+class _SignUpViewState extends State<_SignUpView> {
+  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+  bool _obscurePassword = true;
+  bool _obscureConfirm = true;
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  void _handleStatusChange(BuildContext context, AuthFormNotifier notifier) {
     switch (notifier.status) {
-      case SignUpStatus.success:
+      case AuthStatus.success:
         final currentUsername = notifier.username;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Account created successfully!')),
         );
         notifier.resetStatus();
         context.go('/home', extra: currentUsername);
-      case SignUpStatus.error:
+      case AuthStatus.error:
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(notifier.errorMessage ?? 'Unknown error')),
         );
@@ -71,7 +93,7 @@ class _SignUpView extends StatelessWidget {
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32),
-                child: Consumer<SignUpNotifier>(
+                child: Consumer<AuthFormNotifier>(
                   builder: (context, notifier, _) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       _handleStatusChange(context, notifier);
@@ -86,34 +108,47 @@ class _SignUpView extends StatelessWidget {
                         AppTextField(
                           label: 'Username',
                           hint: 'example',
-                          controller: notifier.usernameController,
+                          controller: _usernameController,
                         ),
                         const SizedBox(height: 12),
                         AppTextField(
                           label: 'Email',
                           hint: 'example@example.com',
-                          controller: notifier.emailController,
+                          controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                         ),
                         const SizedBox(height: 12),
-                        _PasswordField(
+                        PasswordField(
                           label: 'Password',
-                          controller: notifier.passwordController,
-                          obscure: notifier.obscurePassword,
-                          onToggle: notifier.toggleObscurePassword,
+                          controller: _passwordController,
+                          obscure: _obscurePassword,
+                          onToggle: () {
+                            setState(() {
+                              _obscurePassword = !_obscurePassword;
+                            });
+                          },
                         ),
                         const SizedBox(height: 12),
-                        _PasswordField(
+                        PasswordField(
                           label: 'Confirm Password',
-                          controller: notifier.confirmPasswordController,
-                          obscure: notifier.obscureConfirm,
-                          onToggle: notifier.toggleObscureConfirm,
+                          controller: _confirmPasswordController,
+                          obscure: _obscureConfirm,
+                          onToggle: () {
+                            setState(() {
+                              _obscureConfirm = !_obscureConfirm;
+                            });
+                          },
                         ),
                         const SizedBox(height: 32),
                         Center(
                           child: AuthButtonDark(
                             text: 'Sign Up',
-                            onPressed: notifier.signUp,
+                            onPressed: () => notifier.signUp(
+                              _usernameController.text,
+                              _emailController.text,
+                              _passwordController.text,
+                              _confirmPasswordController.text,
+                            ),
                             isLoading: notifier.isLoading,
                           ),
                         ),
@@ -143,11 +178,7 @@ class _Header extends StatelessWidget {
               context.go('/welcome');
             }
           },
-          child: Icon(
-            Icons.arrow_back_ios,
-            size: 28,
-            color: AppColors.primary,
-          ),
+          child: Icon(Icons.arrow_back_ios, size: 28, color: AppColors.primary),
         ),
         Expanded(
           child: Center(
@@ -163,37 +194,6 @@ class _Header extends StatelessWidget {
         ),
         const SizedBox(width: 32),
       ],
-    );
-  }
-}
-
-class _PasswordField extends StatelessWidget {
-  const _PasswordField({
-    required this.label,
-    required this.controller,
-    required this.obscure,
-    required this.onToggle,
-  });
-
-  final String label;
-  final TextEditingController controller;
-  final bool obscure;
-  final VoidCallback onToggle;
-
-  @override
-  Widget build(BuildContext context) {
-    return AppTextField(
-      label: label,
-      hint: '************',
-      controller: controller,
-      obscureText: obscure,
-      suffixIcon: GestureDetector(
-        onTap: onToggle,
-        child: Icon(
-          obscure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-          color: AppColors.primary.withValues(alpha: 0.5),
-        ),
-      ),
     );
   }
 }

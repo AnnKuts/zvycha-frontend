@@ -18,22 +18,22 @@ class AuthButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final buttonStyle = isFilled
         ? ElevatedButton.styleFrom(
-      backgroundColor: AppColors.accentGreen,
-      foregroundColor: AppColors.primary,
-      elevation: 0,
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-    )
+            backgroundColor: AppColors.accentGreen,
+            foregroundColor: AppColors.primary,
+            elevation: 0,
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          )
         : OutlinedButton.styleFrom(
-      foregroundColor: Colors.white,
-      side: const BorderSide(color: Colors.white, width: 1.6),
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-    );
+            foregroundColor: Colors.white,
+            side: const BorderSide(color: Colors.white, width: 1.6),
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          );
 
     final textStyle = GoogleFonts.comfortaa(
       fontSize: 24,
@@ -44,27 +44,27 @@ class AuthButton extends StatelessWidget {
       width: 182,
       child: isFilled
           ? ElevatedButton(
-        onPressed: onPressed,
-        style: buttonStyle,
-        child: Center(
-          child: Text(
-            text,
-            textAlign: TextAlign.center,
-            style: textStyle,
-          ),
-        ),
-      )
+              onPressed: onPressed,
+              style: buttonStyle,
+              child: Center(
+                child: Text(
+                  text,
+                  textAlign: TextAlign.center,
+                  style: textStyle,
+                ),
+              ),
+            )
           : OutlinedButton(
-        onPressed: onPressed,
-        style: buttonStyle,
-        child: Center(
-          child: Text(
-            text,
-            textAlign: TextAlign.center,
-            style: textStyle.copyWith(color: Colors.white),
-          ),
-        ),
-      ),
+              onPressed: onPressed,
+              style: buttonStyle,
+              child: Center(
+                child: Text(
+                  text,
+                  textAlign: TextAlign.center,
+                  style: textStyle.copyWith(color: Colors.white),
+                ),
+              ),
+            ),
     );
   }
 }

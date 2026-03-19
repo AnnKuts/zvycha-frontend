@@ -31,20 +31,20 @@ class AuthButtonDark extends StatelessWidget {
         ),
         child: isLoading
             ? const SizedBox(
-          width: 22,
-          height: 22,
-          child: CircularProgressIndicator(
-            color: Colors.white,
-            strokeWidth: 2,
-          ),
-        )
+                width: 22,
+                height: 22,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2,
+                ),
+              )
             : Text(
-          text,
-          style: GoogleFonts.comfortaa(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+                text,
+                style: GoogleFonts.comfortaa(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
       ),
     );
   }

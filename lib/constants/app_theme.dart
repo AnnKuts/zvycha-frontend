@@ -6,6 +6,10 @@ class AppTheme {
   static ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     scaffoldBackgroundColor: AppColors.background,
+    colorScheme: const ColorScheme.light(
+      primary: AppColors.primary,
+      secondary: AppColors.accentGreen,
+    ),
     textTheme: GoogleFonts.comfortaaTextTheme().copyWith(
       titleLarge: GoogleFonts.comfortaa(
         fontSize: 32,

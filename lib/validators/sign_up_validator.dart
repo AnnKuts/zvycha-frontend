@@ -11,7 +11,7 @@ class SignUpValidator {
         confirmPassword.isEmpty) {
       return 'Please fill in all fields';
     }
-
+    //залежно від нашої логіки потім помінять нормально
     if (username.length < 3) {
       return 'Username must be at least 3 characters';
     }

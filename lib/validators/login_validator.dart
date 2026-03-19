@@ -1,8 +1,5 @@
 class LoginValidator {
-  static String? validate({
-    required String email,
-    required String password,
-  }) {
+  static String? validate({required String email, required String password}) {
     if (email.isEmpty || password.isEmpty) {
       return 'Please fill in all fields';
     }

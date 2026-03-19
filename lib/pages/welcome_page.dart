@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
-import 'login_page.dart';
-import 'sign_up_page.dart';
 import '../widgets/welcome_buttons.dart';
 import 'package:go_router/go_router.dart';
 

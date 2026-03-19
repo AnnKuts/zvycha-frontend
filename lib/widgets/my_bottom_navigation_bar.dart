@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../constants/app_colors.dart';
 
 class MyBottomNavigationBar extends StatelessWidget {
   final int selectedIndex;
@@ -19,7 +20,7 @@ class MyBottomNavigationBar extends StatelessWidget {
       showSelectedLabels: false,
       showUnselectedLabels: false,
       backgroundColor: Colors.white,
-      selectedItemColor: const Color(0xFF0F372E),
+      selectedItemColor: AppColors.primary,
       unselectedItemColor: const Color(0xFFB0B0B0),
       elevation: 8,
       items: const [

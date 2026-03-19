@@ -38,10 +38,7 @@ class AppTextField extends StatelessWidget {
           controller: controller,
           obscureText: obscureText,
           keyboardType: keyboardType,
-          style: GoogleFonts.comfortaa(
-            fontSize: 16,
-            color: AppColors.primary,
-          ),
+          style: GoogleFonts.comfortaa(fontSize: 16, color: AppColors.primary),
           decoration: InputDecoration(
             hintText: hint,
             hintStyle: GoogleFonts.comfortaa(
@@ -50,8 +47,10 @@ class AppTextField extends StatelessWidget {
             ),
             filled: true,
             fillColor: Colors.white,
-            contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 14,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide.none,
