@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../constants/app_colors.dart';
 import 'login_page.dart';
 import 'sign_up_page.dart';
+import '../widgets/welcome_buttons.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
@@ -36,68 +36,27 @@ class WelcomePage extends StatelessWidget {
 
                 const SizedBox(height: 70),
 
-                SizedBox(
-                  width: 182,
-                  height: 51,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginPage()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF8EE36B),
-                      foregroundColor: AppColors.primary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: EdgeInsets.zero,
-                      elevation: 0,
-                    ),
-                    child: Text(
-                      'Log In',
-                      style: GoogleFonts.comfortaa(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.primary,
-                      ),
-                    ),
-                  ),
+                AuthButton(
+                  text: 'Log In',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const LoginPage()),
+                    );
+                  },
                 ),
 
                 const SizedBox(height: 16),
 
-                SizedBox(
-                  width: 182,
-                  height: 51,
-                  child: OutlinedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SignUpPage()),
-                      );
-                    },
-                    style: OutlinedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      foregroundColor: Colors.white,
-                      side: const BorderSide(color: Colors.white, width: 1.6),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: EdgeInsets.zero,
-                    ),
-                    child: Text(
-                      'Sign Up',
-                      style: GoogleFonts.comfortaa(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+                AuthButton(
+                  text: 'Sign Up',
+                  isFilled: false,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const SignUpPage()),
+                    );
+                  },
                 ),
 
                 const SizedBox(height: 40),

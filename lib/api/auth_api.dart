@@ -1,18 +1,18 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AuthApi {
-  static const String _baseUrl = 'http://10.0.2.2:8000';
+  static final String _baseUrl = dotenv.env['BASE_URL'] ?? '';
 
   static Future<Map<String, dynamic>> login(
-      String email, String password) async {
+    String email,
+    String password,
+  ) async {
     final response = await http.post(
       Uri.parse('$_baseUrl/users/login'),
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'email': email,
-        'password': password,
-      }),
+      body: jsonEncode({'email': email, 'password': password}),
     );
 
     final body = jsonDecode(response.body);
@@ -25,15 +25,14 @@ class AuthApi {
   }
 
   static Future<Map<String, dynamic>> signUp(
-      String name, String email, String password) async {
+    String name,
+    String email,
+    String password,
+  ) async {
     final response = await http.post(
       Uri.parse('$_baseUrl/users/sign_up'),
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'name': name,
-        'email': email,
-        'password': password,
-      }),
+      body: jsonEncode({'name': name, 'email': email, 'password': password}),
     );
 
     final body = jsonDecode(response.body);
