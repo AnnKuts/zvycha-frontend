@@ -5,6 +5,7 @@ import '../constants/app_colors.dart';
 import '../notifiers/login_notifier.dart';
 import '../widgets/text_field.dart';
 import '../widgets/auth_buttons.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -24,11 +25,12 @@ class _LoginView extends StatelessWidget {
   void _handleStatusChange(BuildContext context, LoginNotifier notifier) {
     switch (notifier.status) {
       case LoginStatus.success:
+        final currentUsername = notifier.username;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login successful!')),
         );
         notifier.resetStatus();
-    // TODO: navigate to home
+        context.go('/home', extra: currentUsername);
       case LoginStatus.error:
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(notifier.errorMessage ?? 'Unknown error')),
@@ -120,7 +122,13 @@ class _Header extends StatelessWidget {
     return Row(
       children: [
         GestureDetector(
-          onTap: () => Navigator.pop(context),
+          onTap: () {
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              context.go('/welcome');
+            }
+          },
           child: Icon(
             Icons.arrow_back_ios,
             size: 28,

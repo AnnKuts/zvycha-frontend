@@ -5,6 +5,7 @@ import '../constants/app_colors.dart';
 import '../notifiers/sign_up_notifier.dart';
 import '../widgets/text_field.dart';
 import '../widgets/auth_buttons.dart';
+import 'package:go_router/go_router.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
@@ -24,11 +25,12 @@ class _SignUpView extends StatelessWidget {
   void _handleStatusChange(BuildContext context, SignUpNotifier notifier) {
     switch (notifier.status) {
       case SignUpStatus.success:
+        final currentUsername = notifier.username;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Account created successfully!')),
         );
         notifier.resetStatus();
-        Navigator.pop(context);
+        context.go('/home', extra: currentUsername);
       case SignUpStatus.error:
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(notifier.errorMessage ?? 'Unknown error')),
@@ -134,7 +136,13 @@ class _Header extends StatelessWidget {
     return Row(
       children: [
         GestureDetector(
-          onTap: () => Navigator.pop(context),
+          onTap: () {
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              context.go('/welcome');
+            }
+          },
           child: Icon(
             Icons.arrow_back_ios,
             size: 28,

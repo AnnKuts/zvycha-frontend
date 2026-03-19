@@ -3,6 +3,7 @@ import '../constants/app_colors.dart';
 import 'login_page.dart';
 import 'sign_up_page.dart';
 import '../widgets/welcome_buttons.dart';
+import 'package:go_router/go_router.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
@@ -39,10 +40,7 @@ class WelcomePage extends StatelessWidget {
                 AuthButton(
                   text: 'Log In',
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const LoginPage()),
-                    );
+                    context.push('/login');
                   },
                 ),
 
@@ -52,10 +50,7 @@ class WelcomePage extends StatelessWidget {
                   text: 'Sign Up',
                   isFilled: false,
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const SignUpPage()),
-                    );
+                    context.push('/signup');
                   },
                 ),
 

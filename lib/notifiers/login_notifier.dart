@@ -11,11 +11,13 @@ class LoginNotifier extends ChangeNotifier {
   LoginStatus _status = LoginStatus.idle;
   String? _errorMessage;
   bool _obscurePassword = true;
+  String? _username;
 
   LoginStatus get status => _status;
   String? get errorMessage => _errorMessage;
   bool get obscurePassword => _obscurePassword;
   bool get isLoading => _status == LoginStatus.loading;
+  String? get username => _username;
 
   void toggleObscurePassword() {
     _obscurePassword = !_obscurePassword;
@@ -40,10 +42,14 @@ class LoginNotifier extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await AuthApi.login(
+      final response = await AuthApi.login(
         emailController.text.trim(),
         passwordController.text,
       );
+      
+      _username = response['name'] ??
+                  response['username'] ?? 
+                  emailController.text.trim().split('@').first;
 
       // TODO: save token here
 

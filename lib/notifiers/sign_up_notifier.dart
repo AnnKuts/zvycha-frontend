@@ -14,12 +14,14 @@ class SignUpNotifier extends ChangeNotifier {
   String? _errorMessage;
   bool _obscurePassword = true;
   bool _obscureConfirm = true;
+  String? _username;
 
   SignUpStatus get status => _status;
   String? get errorMessage => _errorMessage;
   bool get obscurePassword => _obscurePassword;
   bool get obscureConfirm => _obscureConfirm;
   bool get isLoading => _status == SignUpStatus.loading;
+  String? get username => _username;
 
   void toggleObscurePassword() {
     _obscurePassword = !_obscurePassword;
@@ -51,11 +53,15 @@ class SignUpNotifier extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await AuthApi.signUp(
+      final response = await AuthApi.signUp(
         usernameController.text.trim(),
         emailController.text.trim(),
         passwordController.text,
       );
+      
+      _username = response['name'] ??
+                  response['username'] ?? 
+                  usernameController.text.trim();
 
       _status = SignUpStatus.success;
     } catch (e) {
