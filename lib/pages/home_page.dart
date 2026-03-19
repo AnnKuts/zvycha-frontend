@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import '../constants/app_colors.dart';
 import '../widgets/my_bottom_navigation_bar.dart';
-import '../services/auth_storage.dart';
 import 'settings_page.dart';
 
 class HomePage extends StatefulWidget {
