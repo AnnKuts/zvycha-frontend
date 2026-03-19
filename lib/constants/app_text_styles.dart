@@ -6,7 +6,7 @@ class AppTheme {
   static ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     scaffoldBackgroundColor: AppColors.background,
-    textTheme: GoogleFonts.interTextTheme().copyWith(
+    textTheme: GoogleFonts.comfortaaTextTheme().copyWith(
       titleLarge: GoogleFonts.comfortaa(
         fontSize: 32,
         fontWeight: FontWeight.bold,

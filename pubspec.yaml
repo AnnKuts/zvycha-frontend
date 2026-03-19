@@ -19,12 +19,17 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
   google_fonts: ^8.0.2
+  http: ^1.2.2
   flutter_svg: ^2.2.4
   flutter_launcher_icons: ^0.14.4
+  flutter_dotenv: ^6.0.0
+
 flutter_launcher_icons:
   android: true
   ios: true
   image_path: "assets/logos/white-bg-no-mouth-cat.png"
+  adaptive_icon_background: transparent
+
 
 dev_dependencies:
   flutter_test:
@@ -38,9 +43,12 @@ dev_dependencies:
   flutter_lints: ^6.0.0
 
 flutter:
-   assets:
+  uses-material-design: true
+  assets:
+    - .env
     - assets/images/
     - assets/images/welcome/
+    - assets/images/auth/
     - assets/logos/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

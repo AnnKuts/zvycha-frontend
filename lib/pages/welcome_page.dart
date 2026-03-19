@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../constants/app_colors.dart';
+import 'login_page.dart';
+import 'sign_up_page.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
@@ -38,7 +40,13 @@ class WelcomePage extends StatelessWidget {
                   width: 182,
                   height: 51,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginPage()),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF8EE36B),
                       foregroundColor: AppColors.primary,
@@ -65,11 +73,17 @@ class WelcomePage extends StatelessWidget {
                   width: 182,
                   height: 51,
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SignUpPage()),
+                      );
+                    },
                     style: OutlinedButton.styleFrom(
                       backgroundColor: Colors.transparent,
                       foregroundColor: Colors.white,
-                      side: const BorderSide(color: Colors.white, width: 2),
+                      side: const BorderSide(color: Colors.white, width: 1.6),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
