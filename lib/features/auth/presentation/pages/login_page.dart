@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import '../constants/app_colors.dart';
-import '../notifiers/auth_form_notifier.dart';
-import '../widgets/text_field.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../providers/auth_form_notifier.dart';
+import '../../../../core/widgets/text_field.dart';
 import '../widgets/password_field.dart';
 import '../widgets/auth_buttons.dart';
 import 'package:go_router/go_router.dart';

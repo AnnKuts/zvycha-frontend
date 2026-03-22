@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../services/auth_service.dart';
-import '../validators/login_validator.dart';
-import '../validators/sign_up_validator.dart';
+import '../../data/auth_service.dart';
+import '../utils/validators/login_validator.dart';
+import '../utils/validators/sign_up_validator.dart';
 import 'auth_notifier.dart';
 
 enum AuthStatus { idle, loading, success, error }

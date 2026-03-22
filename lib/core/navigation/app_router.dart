@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../pages/welcome_page.dart';
-import '../pages/login_page.dart';
-import '../pages/sign_up_page.dart';
+import '../../features/auth/presentation/pages/welcome_page.dart';
+import '../../features/auth/presentation/pages/login_page.dart';
+import '../../features/auth/presentation/pages/sign_up_page.dart';
 import '../widgets/home_loader.dart';
-import '../notifiers/auth_notifier.dart';
+import '../../features/auth/presentation/providers/auth_notifier.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/welcome',

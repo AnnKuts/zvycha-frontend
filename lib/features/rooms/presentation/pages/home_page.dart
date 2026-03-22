@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
-import '../widgets/my_bottom_navigation_bar.dart';
-import 'settings_page.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/widgets/my_bottom_navigation_bar.dart';
+import '../../../../settings_page.dart';
 
 class HomePage extends StatefulWidget {
   final String username;

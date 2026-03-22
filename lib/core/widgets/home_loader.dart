@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../pages/home_page.dart';
+import '../../features/rooms/presentation/pages/home_page.dart';
 import '../services/auth_storage.dart';
 
 class HomeLoader extends StatefulWidget {

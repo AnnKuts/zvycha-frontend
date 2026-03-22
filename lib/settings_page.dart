@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../notifiers/auth_notifier.dart';
+import 'features/auth/presentation/providers/auth_notifier.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
