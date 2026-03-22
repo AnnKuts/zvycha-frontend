@@ -1,7 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
+import 'package:zvycha_frontend/constants/app_theme.dart';
+import 'package:zvycha_frontend/router/app_router.dart';
+import 'package:zvycha_frontend/notifiers/auth_notifier.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+
+  await authNotifier.init();
+
+  runApp(
+    ChangeNotifierProvider.value(value: authNotifier, child: const MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -9,11 +21,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: appRouter,
       title: 'zvycha',
-      theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-      ),
+      theme: AppTheme.lightTheme,
     );
   }
 }
