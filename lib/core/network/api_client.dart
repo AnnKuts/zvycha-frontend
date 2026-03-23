@@ -4,9 +4,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../services/auth_storage.dart';
 
 class ApiClient {
-  static final String _baseUrl = dotenv.env['BASE_URL'] ?? '';
+  final String _baseUrl = dotenv.env['BASE_URL'] ?? '';
 
-  static Future<Map<String, String>> _getHeaders() async {
+  Future<Map<String, String>> _getHeaders() async {
     final token = await AuthStorage.getToken();
     final headers = <String, String>{
       'Content-Type': 'application/json',
@@ -19,37 +19,68 @@ class ApiClient {
     return headers;
   }
 
-  static Future<http.Response> get(String endpoint) async {
-    final headers = await _getHeaders();
-    return http.get(Uri.parse('$_baseUrl$endpoint'), headers: headers);
+  dynamic _handleResponse(http.Response response) {
+    final body = jsonDecode(response.body);
+    if (response.statusCode >= 200 &&
+        response.statusCode < 300) {
+      return body;
+    } else {
+      final message = body['detail'] is List
+          ? body['detail'][0]['msg']
+          : body['detail'] ?? 'Failed';
+      throw Exception(message);
+    }
   }
 
-  static Future<http.Response> post(
+  Future<dynamic> get(String endpoint) async {
+    final response = await http.get(
+      Uri.parse('$_baseUrl$endpoint'),
+      headers: await _getHeaders(),
+    );
+    return _handleResponse(response);
+  }
+
+  Future<dynamic> post(
     String endpoint, {
     Map<String, dynamic>? body,
   }) async {
-    final headers = await _getHeaders();
-    return http.post(
+    final response = await http.post(
       Uri.parse('$_baseUrl$endpoint'),
-      headers: headers,
+      headers: await _getHeaders(),
       body: body != null ? jsonEncode(body) : null,
     );
+    return _handleResponse(response);
   }
 
-  static Future<http.Response> put(
+  Future<dynamic> put(
     String endpoint, {
     Map<String, dynamic>? body,
   }) async {
-    final headers = await _getHeaders();
-    return http.put(
+    final response = await http.put(
       Uri.parse('$_baseUrl$endpoint'),
-      headers: headers,
+      headers: await _getHeaders(),
       body: body != null ? jsonEncode(body) : null,
     );
+    return _handleResponse(response);
   }
 
-  static Future<http.Response> delete(String endpoint) async {
-    final headers = await _getHeaders();
-    return http.delete(Uri.parse('$_baseUrl$endpoint'), headers: headers);
+  Future<dynamic> patch(
+    String endpoint, {
+    Map<String, dynamic>? body,
+  }) async {
+    final response = await http.patch(
+      Uri.parse('$_baseUrl$endpoint'),
+      headers: await _getHeaders(),
+      body: body != null ? jsonEncode(body) : null,
+    );
+    return _handleResponse(response);
+  }
+
+  Future<dynamic> delete(String endpoint) async {
+    final response = await http.delete(
+      Uri.parse('$_baseUrl$endpoint'),
+      headers: await _getHeaders(),
+    );
+    return _handleResponse(response);
   }
 }
