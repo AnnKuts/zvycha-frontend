@@ -37,7 +37,7 @@ GoRouter createRouter(AuthNotifier authNotifier) {
       );
 
       if (loggedIn && onAuthRoute) {
-        return AppPages.home.path;
+        return AppPages.rooms.path;
       }
       if (!loggedIn &&
           !onAuthRoute &&

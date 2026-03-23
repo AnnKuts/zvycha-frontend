@@ -55,7 +55,7 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         );
         notifier.resetStatus();
-        context.go(AppPages.home.path);
+        context.go(AppPages.rooms.path);
         break;
 
       case AuthStatus.error:
@@ -68,7 +68,7 @@ class _SignUpPageState extends State<SignUpPage> {
         );
         notifier.resetStatus();
         break;
-        
+
       default:
         break;
     }

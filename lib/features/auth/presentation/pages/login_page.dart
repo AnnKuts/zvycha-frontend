@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
           const SnackBar(content: Text('Login successful!')),
         );
         notifier.resetStatus();
-        context.go(AppPages.home.path);
+        context.go(AppPages.rooms.path);
         break;
 
       case AuthStatus.error:
