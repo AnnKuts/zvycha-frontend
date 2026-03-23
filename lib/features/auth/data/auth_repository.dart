@@ -1,9 +1,9 @@
 import 'auth_api.dart';
 
-class AuthService {
+class AuthRepository {
   final AuthApi _authApi;
 
-  AuthService(this._authApi);
+  AuthRepository(this._authApi);
 
   Future<Map<String, String>> login(
     String email,

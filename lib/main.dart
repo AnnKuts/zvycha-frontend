@@ -8,7 +8,7 @@ import './core/theme/app_theme.dart';
 import './core/navigation/app_router.dart';
 
 import './features/auth/data/auth_api.dart';
-import './features/auth/data/auth_service.dart';
+import 'features/auth/data/auth_repository.dart';
 import './features/auth/presentation/providers/auth_form_notifier.dart';
 import './features/auth/presentation/providers/auth_notifier.dart';
 
@@ -19,7 +19,7 @@ Future<void> main() async {
   final apiClient = ApiClient();
 
   final authApi = AuthApi(apiClient);
-  final authService = AuthService(authApi);
+  final authRepository = AuthRepository(authApi);
 
   final authNotifier = AuthNotifier();
 
@@ -34,7 +34,7 @@ Future<void> main() async {
           value: authNotifier,
         ),
         ChangeNotifierProvider<AuthFormNotifier>(
-          create: (_) => AuthFormNotifier(authNotifier, authService),
+          create: (_) => AuthFormNotifier(authNotifier, authRepository),
         ),
       ],
       child: MyApp(router: router),

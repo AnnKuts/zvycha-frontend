@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../data/auth_service.dart';
+import '../../data/auth_repository.dart';
 import '../utils/validators/login_validator.dart';
 import '../utils/validators/sign_up_validator.dart';
 import 'auth_notifier.dart';
@@ -7,10 +7,10 @@ import 'auth_notifier.dart';
 enum FormStatus { idle, loading, success, error }
 
 class AuthFormNotifier extends ChangeNotifier {
-  final AuthService _authService;
+  final AuthRepository _authRepository;
   final AuthNotifier _authNotifier;
 
-  AuthFormNotifier(this._authNotifier, this._authService);
+  AuthFormNotifier(this._authNotifier, this._authRepository);
 
   FormStatus _status = FormStatus.idle;
   String? _errorMessage;
@@ -33,7 +33,7 @@ class AuthFormNotifier extends ChangeNotifier {
 
     _setLoading();
     try {
-      final result = await _authService.login(email, password);
+      final result = await _authRepository.login(email, password);
       await _authNotifier.login(
         result['token']!,
         result['username']!,
@@ -65,7 +65,7 @@ class AuthFormNotifier extends ChangeNotifier {
 
     _setLoading();
     try {
-      final result = await _authService.signUp(
+      final result = await _authRepository.signUp(
         username,
         email,
         password,
