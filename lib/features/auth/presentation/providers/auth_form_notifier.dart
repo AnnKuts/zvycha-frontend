@@ -4,23 +4,28 @@ import '../utils/validators/login_validator.dart';
 import '../utils/validators/sign_up_validator.dart';
 import 'auth_notifier.dart';
 
-enum AuthStatus { idle, loading, success, error }
+enum FormStatus { idle, loading, success, error }
 
 class AuthFormNotifier extends ChangeNotifier {
+  final AuthService _authService;
   final AuthNotifier _authNotifier;
-  AuthFormNotifier(this._authNotifier);
 
-  AuthStatus _status = AuthStatus.idle;
+  AuthFormNotifier(this._authNotifier, this._authService);
+
+  FormStatus _status = FormStatus.idle;
   String? _errorMessage;
   String? _username;
 
-  AuthStatus get status => _status;
+  FormStatus get status => _status;
   String? get errorMessage => _errorMessage;
-  bool get isLoading => _status == AuthStatus.loading;
+  bool get isLoading => _status == FormStatus.loading;
   String? get username => _username;
 
   Future<void> login(String email, String password) async {
-    final error = LoginValidator.validate(email: email, password: password);
+    final error = LoginValidator.validate(
+      email: email,
+      password: password,
+    );
     if (error != null) {
       _setError(error);
       return;
@@ -28,8 +33,11 @@ class AuthFormNotifier extends ChangeNotifier {
 
     _setLoading();
     try {
-      final result = await AuthService.login(email, password);
-      await _authNotifier.login(result['token']!, result['username']!);
+      final result = await _authService.login(email, password);
+      await _authNotifier.login(
+        result['token']!,
+        result['username']!,
+      );
 
       _username = result['username'];
       _setSuccess();
@@ -57,9 +65,16 @@ class AuthFormNotifier extends ChangeNotifier {
 
     _setLoading();
     try {
-      final result = await AuthService.signUp(username, email, password);
-      await _authNotifier.login(result['token']!, result['username']!);
-      
+      final result = await _authService.signUp(
+        username,
+        email,
+        password,
+      );
+      await _authNotifier.login(
+        result['token']!,
+        result['username']!,
+      );
+
       _username = result['username'];
       _setSuccess();
     } catch (e) {
@@ -68,25 +83,25 @@ class AuthFormNotifier extends ChangeNotifier {
   }
 
   void resetStatus() {
-    if (_status != AuthStatus.idle) {
-      _status = AuthStatus.idle;
+    if (_status != FormStatus.idle) {
+      _status = FormStatus.idle;
       _errorMessage = null;
     }
   }
 
   void _setLoading() {
-    _status = AuthStatus.loading;
+    _status = FormStatus.loading;
     _errorMessage = null;
     notifyListeners();
   }
 
   void _setSuccess() {
-    _status = AuthStatus.success;
+    _status = FormStatus.success;
     notifyListeners();
   }
 
   void _setError(String message) {
-    _status = AuthStatus.error;
+    _status = FormStatus.error;
     _errorMessage = message;
     notifyListeners();
   }
