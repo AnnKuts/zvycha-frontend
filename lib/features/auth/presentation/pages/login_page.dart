@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:zvycha_frontend/core/navigation/route_names.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../../core/navigation/route_names.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../providers/auth_form_notifier.dart';
 import '../../../../core/widgets/text_field.dart';
+
+import '../providers/auth_form_notifier.dart';
 import '../widgets/password_field.dart';
 import '../widgets/auth_buttons.dart';
-import 'package:go_router/go_router.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -43,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
     AuthFormNotifier notifier,
   ) {
     switch (notifier.status) {
-      case AuthStatus.success:
+      case FormStatus.success:
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login successful!')),
         );
@@ -51,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
         context.go(AppPages.rooms.path);
         break;
 
-      case AuthStatus.error:
+      case FormStatus.error:
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(

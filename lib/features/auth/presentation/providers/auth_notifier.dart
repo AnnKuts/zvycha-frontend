@@ -36,5 +36,3 @@ class AuthNotifier extends ChangeNotifier {
     notifyListeners();
   }
 }
-
-//final authNotifier = AuthNotifier();

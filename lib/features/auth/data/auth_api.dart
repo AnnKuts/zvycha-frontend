@@ -1,41 +1,27 @@
-import 'dart:convert';
 import '../../../core/network/api_client.dart';
 
 class AuthApi {
-  static Future<Map<String, dynamic>> login(
+  final ApiClient _client;
+  AuthApi(this._client);
+
+  Future<Map<String, dynamic>> login(
     String email,
     String password,
   ) async {
-    final response = await ApiClient.post(
+    return await _client.post(
       '/users/login',
       body: {'email': email, 'password': password},
     );
-
-    final body = jsonDecode(response.body);
-
-    if (response.statusCode == 201) {
-      return body;
-    } else {
-      throw Exception(body['detail'] ?? 'Login failed');
-    }
   }
 
-  static Future<Map<String, dynamic>> signUp(
-    String name,
+  Future<Map<String, dynamic>> signUp(
+    String username,
     String email,
     String password,
   ) async {
-    final response = await ApiClient.post(
+    return await _client.post(
       '/users/sign_up',
-      body: {'name': name, 'email': email, 'password': password},
+      body: {'username': username, 'email': email, 'password': password},
     );
-
-    final body = jsonDecode(response.body);
-
-    if (response.statusCode == 201) {
-      return body;
-    } else {
-      throw Exception(body['detail'] ?? 'Sign up failed');
-    }
   }
 }
