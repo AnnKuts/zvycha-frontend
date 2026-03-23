@@ -1,36 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import '../constants/app_colors.dart';
-import '../notifiers/auth_form_notifier.dart';
-import '../widgets/text_field.dart';
+import 'package:zvycha_frontend/core/navigation/route_names.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../providers/auth_form_notifier.dart';
+import '../../../../core/widgets/text_field.dart';
 import '../widgets/password_field.dart';
 import '../widgets/auth_buttons.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => AuthFormNotifier(),
-      child: const _LoginView(),
-    );
-  }
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginView extends StatefulWidget {
-  const _LoginView();
-
-  @override
-  State<_LoginView> createState() => _LoginViewState();
-}
-
-class _LoginViewState extends State<_LoginView> {
+class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      if (mounted) {
+        context.read<AuthFormNotifier>().resetStatus();
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -39,20 +38,30 @@ class _LoginViewState extends State<_LoginView> {
     super.dispose();
   }
 
-  void _handleStatusChange(BuildContext context, AuthFormNotifier notifier) {
+  void _handleStatusChange(
+    BuildContext context,
+    AuthFormNotifier notifier,
+  ) {
     switch (notifier.status) {
       case AuthStatus.success:
-        final currentUsername = notifier.username;
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('Login successful!')));
-        notifier.resetStatus();
-        context.go('/home', extra: currentUsername);
-      case AuthStatus.error:
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(notifier.errorMessage ?? 'Unknown error')),
+          const SnackBar(content: Text('Login successful!')),
         );
         notifier.resetStatus();
+        context.go(AppPages.rooms.path);
+        break;
+
+      case AuthStatus.error:
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              notifier.errorMessage ?? 'Unknown error',
+            ),
+          ),
+        );
+        notifier.resetStatus();
+        break;
+
       default:
         break;
     }
@@ -87,15 +96,20 @@ class _LoginViewState extends State<_LoginView> {
           SafeArea(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 32,
+                ),
                 child: Consumer<AuthFormNotifier>(
                   builder: (context, notifier, _) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      _handleStatusChange(context, notifier);
-                    });
+                    WidgetsBinding.instance.addPostFrameCallback(
+                      (_) {
+                        _handleStatusChange(context, notifier);
+                      },
+                    );
 
                     return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment:
+                          CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 8),
                         _Header(),
@@ -104,7 +118,8 @@ class _LoginViewState extends State<_LoginView> {
                           label: 'Email',
                           hint: 'example@example.com',
                           controller: _emailController,
-                          keyboardType: TextInputType.emailAddress,
+                          keyboardType:
+                              TextInputType.emailAddress,
                         ),
                         const SizedBox(height: 12),
                         PasswordField(
@@ -112,7 +127,8 @@ class _LoginViewState extends State<_LoginView> {
                           obscure: _obscurePassword,
                           onToggle: () {
                             setState(() {
-                              _obscurePassword = !_obscurePassword;
+                              _obscurePassword =
+                                  !_obscurePassword;
                             });
                           },
                         ),
@@ -150,10 +166,14 @@ class _Header extends StatelessWidget {
             if (context.canPop()) {
               context.pop();
             } else {
-              context.go('/welcome');
+              context.go(AppPages.welcome.path);
             }
           },
-          child: Icon(Icons.arrow_back_ios, size: 28, color: AppColors.primary),
+          child: Icon(
+            Icons.arrow_back_ios,
+            size: 28,
+            color: AppColors.primary,
+          ),
         ),
         Expanded(
           child: Center(

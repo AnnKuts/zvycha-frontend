@@ -1,4 +1,4 @@
-import '../api/auth_api.dart';
+import 'auth_api.dart';
 
 class AuthService {
   static Future<Map<String, String>> login(

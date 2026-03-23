@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import '../services/auth_service.dart';
-import '../validators/login_validator.dart';
-import '../validators/sign_up_validator.dart';
+import '../../data/auth_service.dart';
+import '../utils/validators/login_validator.dart';
+import '../utils/validators/sign_up_validator.dart';
 import 'auth_notifier.dart';
 
 enum AuthStatus { idle, loading, success, error }
 
 class AuthFormNotifier extends ChangeNotifier {
+  final AuthNotifier _authNotifier;
+  AuthFormNotifier(this._authNotifier);
+
   AuthStatus _status = AuthStatus.idle;
   String? _errorMessage;
   String? _username;
@@ -26,7 +29,8 @@ class AuthFormNotifier extends ChangeNotifier {
     _setLoading();
     try {
       final result = await AuthService.login(email, password);
-      await authNotifier.login(result['token']!, result['username']!);
+      await _authNotifier.login(result['token']!, result['username']!);
+
       _username = result['username'];
       _setSuccess();
     } catch (e) {
@@ -54,7 +58,8 @@ class AuthFormNotifier extends ChangeNotifier {
     _setLoading();
     try {
       final result = await AuthService.signUp(username, email, password);
-      await authNotifier.login(result['token']!, result['username']!);
+      await _authNotifier.login(result['token']!, result['username']!);
+      
       _username = result['username'];
       _setSuccess();
     } catch (e) {

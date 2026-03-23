@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'api_client.dart';
+import '../../../core/network/api_client.dart';
 
 class AuthApi {
   static Future<Map<String, dynamic>> login(

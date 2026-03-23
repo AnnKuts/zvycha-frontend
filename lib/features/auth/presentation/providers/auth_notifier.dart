@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/auth_storage.dart';
+import '../../../../core/services/auth_storage.dart';
 
 enum AuthStatus { loading, authenticated, unauthenticated }
 
@@ -37,4 +37,4 @@ class AuthNotifier extends ChangeNotifier {
   }
 }
 
-final authNotifier = AuthNotifier();
+//final authNotifier = AuthNotifier();

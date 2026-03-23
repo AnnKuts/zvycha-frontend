@@ -1,39 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import '../constants/app_colors.dart';
-import '../notifiers/auth_form_notifier.dart';
-import '../widgets/text_field.dart';
+import 'package:zvycha_frontend/core/navigation/route_names.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../providers/auth_form_notifier.dart';
+import '../../../../core/widgets/text_field.dart';
 import '../widgets/password_field.dart';
 import '../widgets/auth_buttons.dart';
 import 'package:go_router/go_router.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => AuthFormNotifier(),
-      child: const _SignUpView(),
-    );
-  }
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SignUpView extends StatefulWidget {
-  const _SignUpView();
-
-  @override
-  State<_SignUpView> createState() => _SignUpViewState();
-}
-
-class _SignUpViewState extends State<_SignUpView> {
+class _SignUpPageState extends State<SignUpPage> {
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   bool _obscurePassword = true;
   bool _obscureConfirm = true;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      if (mounted) {
+        context.read<AuthFormNotifier>().resetStatus();
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -44,20 +43,32 @@ class _SignUpViewState extends State<_SignUpView> {
     super.dispose();
   }
 
-  void _handleStatusChange(BuildContext context, AuthFormNotifier notifier) {
+  void _handleStatusChange(
+    BuildContext context,
+    AuthFormNotifier notifier,
+  ) {
     switch (notifier.status) {
       case AuthStatus.success:
-        final currentUsername = notifier.username;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Account created successfully!')),
+          const SnackBar(
+            content: Text('Account created successfully!'),
+          ),
         );
         notifier.resetStatus();
-        context.go('/home', extra: currentUsername);
+        context.go(AppPages.rooms.path);
+        break;
+
       case AuthStatus.error:
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(notifier.errorMessage ?? 'Unknown error')),
+          SnackBar(
+            content: Text(
+              notifier.errorMessage ?? 'Unknown error',
+            ),
+          ),
         );
         notifier.resetStatus();
+        break;
+
       default:
         break;
     }
@@ -92,15 +103,20 @@ class _SignUpViewState extends State<_SignUpView> {
           SafeArea(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 32,
+                ),
                 child: Consumer<AuthFormNotifier>(
                   builder: (context, notifier, _) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      _handleStatusChange(context, notifier);
-                    });
+                    WidgetsBinding.instance.addPostFrameCallback(
+                      (_) {
+                        _handleStatusChange(context, notifier);
+                      },
+                    );
 
                     return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment:
+                          CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 8),
                         _Header(),
@@ -115,7 +131,8 @@ class _SignUpViewState extends State<_SignUpView> {
                           label: 'Email',
                           hint: 'example@example.com',
                           controller: _emailController,
-                          keyboardType: TextInputType.emailAddress,
+                          keyboardType:
+                              TextInputType.emailAddress,
                         ),
                         const SizedBox(height: 12),
                         PasswordField(
@@ -124,7 +141,8 @@ class _SignUpViewState extends State<_SignUpView> {
                           obscure: _obscurePassword,
                           onToggle: () {
                             setState(() {
-                              _obscurePassword = !_obscurePassword;
+                              _obscurePassword =
+                                  !_obscurePassword;
                             });
                           },
                         ),
@@ -175,10 +193,14 @@ class _Header extends StatelessWidget {
             if (context.canPop()) {
               context.pop();
             } else {
-              context.go('/welcome');
+              context.go(AppPages.welcome.path);
             }
           },
-          child: Icon(Icons.arrow_back_ios, size: 28, color: AppColors.primary),
+          child: Icon(
+            Icons.arrow_back_ios,
+            size: 28,
+            color: AppColors.primary,
+          ),
         ),
         Expanded(
           child: Center(
