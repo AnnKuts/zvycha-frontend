@@ -9,32 +9,30 @@ import '../widgets/password_field.dart';
 import '../widgets/auth_buttons.dart';
 import 'package:go_router/go_router.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => AuthFormNotifier(),
-      child: const _SignUpView(),
-    );
-  }
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SignUpView extends StatefulWidget {
-  const _SignUpView();
-
-  @override
-  State<_SignUpView> createState() => _SignUpViewState();
-}
-
-class _SignUpViewState extends State<_SignUpView> {
+class _SignUpPageState extends State<SignUpPage> {
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   bool _obscurePassword = true;
   bool _obscureConfirm = true;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      if (mounted) {
+        context.read<AuthFormNotifier>().resetStatus();
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -51,14 +49,15 @@ class _SignUpViewState extends State<_SignUpView> {
   ) {
     switch (notifier.status) {
       case AuthStatus.success:
-        final currentUsername = notifier.username;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Account created successfully!'),
           ),
         );
         notifier.resetStatus();
-        context.go(AppPages.home.path, extra: currentUsername);
+        context.go(AppPages.home.path);
+        break;
+
       case AuthStatus.error:
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -68,6 +67,8 @@ class _SignUpViewState extends State<_SignUpView> {
           ),
         );
         notifier.resetStatus();
+        break;
+        
       default:
         break;
     }

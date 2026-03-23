@@ -9,29 +9,27 @@ import '../widgets/password_field.dart';
 import '../widgets/auth_buttons.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => AuthFormNotifier(),
-      child: const _LoginView(),
-    );
-  }
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginView extends StatefulWidget {
-  const _LoginView();
-
-  @override
-  State<_LoginView> createState() => _LoginViewState();
-}
-
-class _LoginViewState extends State<_LoginView> {
+class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      if (mounted) {
+        context.read<AuthFormNotifier>().resetStatus();
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -46,12 +44,13 @@ class _LoginViewState extends State<_LoginView> {
   ) {
     switch (notifier.status) {
       case AuthStatus.success:
-        final currentUsername = notifier.username;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login successful!')),
         );
         notifier.resetStatus();
-        context.go(AppPages.home.path, extra: currentUsername);
+        context.go(AppPages.home.path);
+        break;
+
       case AuthStatus.error:
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -61,6 +60,8 @@ class _LoginViewState extends State<_LoginView> {
           ),
         );
         notifier.resetStatus();
+        break;
+
       default:
         break;
     }

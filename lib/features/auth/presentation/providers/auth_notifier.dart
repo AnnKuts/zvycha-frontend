@@ -37,4 +37,4 @@ class AuthNotifier extends ChangeNotifier {
   }
 }
 
-final authNotifier = AuthNotifier();
+//final authNotifier = AuthNotifier();
