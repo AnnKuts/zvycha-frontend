@@ -1,36 +1,13 @@
 import 'package:flutter/material.dart';
-import '../../../../core/services/auth_storage.dart';
+import 'package:provider/provider.dart';
+import 'package:zvycha_frontend/features/auth/presentation/providers/auth_notifier.dart';
 import '../../../../core/theme/app_colors.dart';
 
-class RoomsPage extends StatefulWidget {
+class RoomsPage extends StatelessWidget {
   const RoomsPage({super.key});
 
   @override
-  State<RoomsPage> createState() => _RoomsPageState();
-}
-
-class _RoomsPageState extends State<RoomsPage> {
-  String? _username;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadUsername();
-  }
-
-  Future<void> _loadUsername() async {
-    final name = await AuthStorage.getUsername();
-    if (mounted) setState(() => _username = name ?? 'User');
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (_username == null) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
-
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -43,9 +20,15 @@ class _RoomsPageState extends State<RoomsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Hi, $_username!',
-                style: Theme.of(context).textTheme.titleLarge,
+              Consumer<AuthNotifier>(
+                builder: (context, auth, child) {
+                  return Text(
+                    'Hi, ${auth.username ?? 'User'}!',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.titleLarge,
+                  );
+                },
               ),
               const SizedBox(height: 20),
               const Text("Ваші кімнати..."),
