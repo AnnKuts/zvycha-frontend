@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:zvycha_frontend/core/navigation/route_names.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../providers/auth_form_notifier.dart';
 import '../../../../core/widgets/text_field.dart';
@@ -44,18 +45,27 @@ class _SignUpViewState extends State<_SignUpView> {
     super.dispose();
   }
 
-  void _handleStatusChange(BuildContext context, AuthFormNotifier notifier) {
+  void _handleStatusChange(
+    BuildContext context,
+    AuthFormNotifier notifier,
+  ) {
     switch (notifier.status) {
       case AuthStatus.success:
         final currentUsername = notifier.username;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Account created successfully!')),
+          const SnackBar(
+            content: Text('Account created successfully!'),
+          ),
         );
         notifier.resetStatus();
-        context.go('/home', extra: currentUsername);
+        context.go(AppPages.home.path, extra: currentUsername);
       case AuthStatus.error:
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(notifier.errorMessage ?? 'Unknown error')),
+          SnackBar(
+            content: Text(
+              notifier.errorMessage ?? 'Unknown error',
+            ),
+          ),
         );
         notifier.resetStatus();
       default:
@@ -92,15 +102,20 @@ class _SignUpViewState extends State<_SignUpView> {
           SafeArea(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 32,
+                ),
                 child: Consumer<AuthFormNotifier>(
                   builder: (context, notifier, _) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      _handleStatusChange(context, notifier);
-                    });
+                    WidgetsBinding.instance.addPostFrameCallback(
+                      (_) {
+                        _handleStatusChange(context, notifier);
+                      },
+                    );
 
                     return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment:
+                          CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 8),
                         _Header(),
@@ -115,7 +130,8 @@ class _SignUpViewState extends State<_SignUpView> {
                           label: 'Email',
                           hint: 'example@example.com',
                           controller: _emailController,
-                          keyboardType: TextInputType.emailAddress,
+                          keyboardType:
+                              TextInputType.emailAddress,
                         ),
                         const SizedBox(height: 12),
                         PasswordField(
@@ -124,7 +140,8 @@ class _SignUpViewState extends State<_SignUpView> {
                           obscure: _obscurePassword,
                           onToggle: () {
                             setState(() {
-                              _obscurePassword = !_obscurePassword;
+                              _obscurePassword =
+                                  !_obscurePassword;
                             });
                           },
                         ),
@@ -175,10 +192,14 @@ class _Header extends StatelessWidget {
             if (context.canPop()) {
               context.pop();
             } else {
-              context.go('/welcome');
+              context.go(AppPages.welcome.path);
             }
           },
-          child: Icon(Icons.arrow_back_ios, size: 28, color: AppColors.primary),
+          child: Icon(
+            Icons.arrow_back_ios,
+            size: 28,
+            color: AppColors.primary,
+          ),
         ),
         Expanded(
           child: Center(

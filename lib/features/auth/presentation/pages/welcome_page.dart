@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zvycha_frontend/core/navigation/route_names.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../widgets/welcome_buttons.dart';
 import 'package:go_router/go_router.dart';
@@ -25,7 +26,10 @@ class WelcomePage extends StatelessWidget {
               children: [
                 const SizedBox(height: 100),
 
-                Image.asset('assets/logos/zvycha-logo-text.png', height: 60),
+                Image.asset(
+                  'assets/logos/zvycha-logo-text.png',
+                  height: 60,
+                ),
 
                 const SizedBox(height: 80),
                 Image.asset(
@@ -38,7 +42,7 @@ class WelcomePage extends StatelessWidget {
                 AuthButton(
                   text: 'Log In',
                   onPressed: () {
-                    context.push('/login');
+                    context.push(AppPages.login.path);
                   },
                 ),
 
@@ -48,7 +52,7 @@ class WelcomePage extends StatelessWidget {
                   text: 'Sign Up',
                   isFilled: false,
                   onPressed: () {
-                    context.push('/signup');
+                    context.push(AppPages.signup.path);
                   },
                 ),
 
