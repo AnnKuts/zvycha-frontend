@@ -18,7 +18,11 @@ class AuthRepository {
     String email,
     String password,
   ) async {
-    final response = await _authApi.signUp(username, email, password);
+    final response = await _authApi.signUp(
+      username,
+      email,
+      password,
+    );
     return _processResponse(response, username);
   }
 
@@ -26,7 +30,9 @@ class AuthRepository {
     Map<String, dynamic> response,
     String defaultUsername,
   ) async {
-    final token = response['token'] ?? response['access_token'];
+    final token =
+        response['token']?.toString() ??
+        response['access_token']?.toString();
 
     if (token == null || token.toString().trim().isEmpty) {
       throw Exception(
@@ -34,14 +40,15 @@ class AuthRepository {
       );
     }
 
+    final userMe = await _authApi.getUserMe(token: token);
+    final id = userMe['id'].toString();
     final username =
-        response['name'] ??
-        response['username'] ??
-        defaultUsername;
+        userMe['username']?.toString() ?? defaultUsername;
 
     return {
-      'token': token.toString(),
-      'username': username.toString(),
+      'token': token,
+      'username': username,
+      'id': id,
     };
   }
 }

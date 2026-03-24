@@ -24,4 +24,8 @@ class AuthApi {
       body: {'username': username, 'email': email, 'password': password},
     );
   }
+
+  Future<Map<String, dynamic>> getUserMe({String? token}) async {
+    return await _client.get('/users/user/me', manualToken: token);
+  }
 }

@@ -32,10 +32,15 @@ class ApiClient {
     }
   }
 
-  Future<dynamic> get(String endpoint) async {
+  Future<dynamic> get(String endpoint, {String? manualToken}) async {
+    final headers = await _getHeaders();
+    if (manualToken != null) {
+      headers['Authorization'] = 'Bearer $manualToken';
+    }
+
     final response = await http.get(
       Uri.parse('$_baseUrl$endpoint'),
-      headers: await _getHeaders(),
+      headers: headers,
     );
     return _handleResponse(response);
   }

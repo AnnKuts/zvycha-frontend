@@ -37,6 +37,7 @@ class AuthFormNotifier extends ChangeNotifier {
       await _authNotifier.login(
         result['token']!,
         result['username']!,
+        result['id']!,
       );
 
       _username = result['username'];
@@ -73,6 +74,7 @@ class AuthFormNotifier extends ChangeNotifier {
       await _authNotifier.login(
         result['token']!,
         result['username']!,
+        result['id']!,
       );
 
       _username = result['username'];
@@ -86,6 +88,7 @@ class AuthFormNotifier extends ChangeNotifier {
     if (_status != FormStatus.idle) {
       _status = FormStatus.idle;
       _errorMessage = null;
+      notifyListeners();
     }
   }
 

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zvycha_frontend/core/navigation/route_names.dart';
-import 'package:zvycha_frontend/features/main/presentation/pages/main_shell_page.dart';
-import 'package:zvycha_frontend/features/rooms/presentation/pages/rooms_page.dart';
+import 'route_names.dart';
+import '../../features/friends/presentations/pages/friends_find_page.dart';
+import '../../features/friends/presentations/pages/friends_page.dart';
+import '../../features/friends/presentations/pages/friends_yours_page.dart';
+import '../../features/main/presentation/pages/main_shell_page.dart';
+import '../../features/rooms/presentation/pages/rooms_page.dart';
 import 'package:zvycha_frontend/settings_page.dart';
 import '../../features/auth/presentation/pages/welcome_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
@@ -95,10 +98,32 @@ GoRouter createRouter(AuthNotifier authNotifier) {
           StatefulShellBranch(
             navigatorKey: _friendsNavigatorKey,
             routes: [
-              GoRoute(
-                path: AppPages.friends.path,
-                builder: (context, state) =>
-                    const Center(child: Text("Friends")),
+              StatefulShellRoute.indexedStack(
+                builder: (context, state, navigationShell) {
+                  return FriendsPage(
+                    navigationShell: navigationShell,
+                  );
+                },
+                branches: [
+                  StatefulShellBranch(
+                    routes: [
+                      GoRoute(
+                        path: AppPages.friendsFind.path,
+                        builder: (context, state) =>
+                            const FriendsYoursPage(),
+                      ),
+                    ],
+                  ),
+                  StatefulShellBranch(
+                    routes: [
+                      GoRoute(
+                        path: AppPages.friendsYours.path,
+                        builder: (context, state) =>
+                            const FriendsFindPage(),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),
