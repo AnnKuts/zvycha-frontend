@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/navigation/route_names.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/text_field.dart';
 
 import '../providers/auth_form_notifier.dart';
@@ -121,7 +122,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 8),
-                        _Header(),
+                        CustomHeader(title: 'Sign Up'),
                         const SizedBox(height: 80),
                         AppTextField(
                           label: 'Username',
@@ -181,43 +182,6 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _Header extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        GestureDetector(
-          onTap: () {
-            if (context.canPop()) {
-              context.pop();
-            } else {
-              context.go(AppPages.welcome.path);
-            }
-          },
-          child: Icon(
-            Icons.arrow_back_ios,
-            size: 28,
-            color: AppColors.primary,
-          ),
-        ),
-        Expanded(
-          child: Center(
-            child: Text(
-              'Sign Up',
-              style: GoogleFonts.comfortaa(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primary,
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(width: 32),
-      ],
     );
   }
 }
