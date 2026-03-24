@@ -110,6 +110,26 @@ class FriendsNotifier extends ChangeNotifier {
     }
   }
 
+  Future<void> fetchUsernamesByIds(List<String> userIds) async {
+    final Set<String> idsToFetch = userIds
+        .where(
+          (id) =>
+              id.isNotEmpty && !_userNamesCache.containsKey(id),
+        )
+        .toSet();
+
+    if (idsToFetch.isEmpty) return;
+
+    try {
+      await Future.wait(
+        idsToFetch.map((id) => _fetchUsernameSilent(id)),
+      );
+      notifyListeners();
+    } catch (e) {
+      debugPrint("Error fetching usernames: $e");
+    }
+  }
+
   Future<void> searchNewPeople(String username) async {
     if (username.isEmpty) {
       _foundUsers = [];

@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../features/rooms/presentation/pages/accept_invitation_page.dart';
+import '../../features/rooms/presentation/pages/choose_friend_page.dart';
+import '../../features/rooms/presentation/pages/create_room_page.dart';
+import '../../features/rooms/presentation/pages/invitations_page.dart';
+import '../../features/rooms/presentation/pages/invitations_received_page.dart';
+import '../../features/rooms/presentation/pages/invitations_sent_page.dart';
+import '../../features/rooms/presentation/pages/room_details_page.dart';
 import 'route_names.dart';
 import '../../features/friends/presentations/pages/friends_find_page.dart';
 import '../../features/friends/presentations/pages/friends_page.dart';
@@ -81,17 +88,48 @@ GoRouter createRouter(AuthNotifier authNotifier) {
               GoRoute(
                 path: AppPages.rooms.path,
                 builder: (context, state) => const RoomsPage(),
+                routes: [
+                  GoRoute(
+                    path: AppPages.roomDetails.path,
+                    name: AppPages.roomDetails.name,
+                    builder: (context, state) {
+                      final roomId =
+                          state.pathParameters['roomId']!;
+                      return RoomDetailsPage(roomId: roomId);
+                    },
+                  ),
+                ],
               ),
             ],
           ),
           StatefulShellBranch(
             navigatorKey: _invitationsNavigatorKey,
             routes: [
-              GoRoute(
-                path: AppPages.invitations.path,
-                // builder: (context, state) => const InvitationsPage(),
-                builder: (context, state) =>
-                    const Center(child: Text("Invitations")),
+              StatefulShellRoute.indexedStack(
+                builder: (context, state, navigationShell) =>
+                    InvitationsPage(
+                      navigationShell: navigationShell,
+                    ),
+                branches: [
+                  StatefulShellBranch(
+                    routes: [
+                      GoRoute(
+                        path: AppPages.invitationsReceived.path,
+                        builder: (context, state) =>
+                            const InvitationsReceivedPage(),
+                      ),
+                    ],
+                  ),
+                  StatefulShellBranch(
+                    routes: [
+                      GoRoute(
+                        path: AppPages.invitationsSent.path,
+                        builder: (context, state) =>
+                            const InvitationsSentPage(),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),
@@ -138,6 +176,34 @@ GoRouter createRouter(AuthNotifier authNotifier) {
             ],
           ),
         ],
+      ),
+
+      GoRoute(
+        path: AppPages.createRoom.path,
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (context, state) => const CreateRoomPage(),
+      ),
+      GoRoute(
+        path: AppPages.chooseFriend.path,
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (context, state) => const ChooseFriendPage(),
+      ),
+
+      GoRoute(
+        path: AppPages.acceptInvitation.path,
+        name: AppPages.acceptInvitation.name,
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (context, state) {
+          final roomId = state.pathParameters['roomId']!;
+
+          final data = state.extra as Map<String, dynamic>;
+
+          return AcceptInvitationPage(
+            roomId: roomId,
+            roomName: data['roomName'] as String,
+            senderName: data['senderName'] as String,
+          );
+        },
       ),
     ],
   );

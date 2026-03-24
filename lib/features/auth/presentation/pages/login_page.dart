@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/navigation/route_names.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/text_field.dart';
 
 import '../providers/auth_form_notifier.dart';
@@ -115,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                           CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 8),
-                        _Header(),
+                        CustomHeader(title: 'Log In'),
                         const SizedBox(height: 100),
                         AppTextField(
                           label: 'Email',
@@ -155,43 +156,6 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _Header extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        GestureDetector(
-          onTap: () {
-            if (context.canPop()) {
-              context.pop();
-            } else {
-              context.go(AppPages.welcome.path);
-            }
-          },
-          child: Icon(
-            Icons.arrow_back_ios,
-            size: 28,
-            color: AppColors.primary,
-          ),
-        ),
-        Expanded(
-          child: Center(
-            child: Text(
-              'Log In',
-              style: GoogleFonts.comfortaa(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primary,
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(width: 32),
-      ],
     );
   }
 }

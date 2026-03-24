@@ -3,8 +3,16 @@ enum AppPages {
   welcome('/welcome'),
   login('/login'),
   signup('/signup'),
+  
   rooms('/rooms'),
-  invitations('/invitations'),
+  createRoom('/rooms/create'),
+  chooseFriend('/rooms/create/choose-friend'),
+  roomDetails('details/:roomId'),
+
+  invitationsReceived('/invitations/received'),
+  invitationsSent('/invitations/sent'),
+  acceptInvitation('/accept-invitation/:roomId'),
+
   friendsYours('/friends/yours'),
   friendsFind('/friends/find'),
   settings('/settings');

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:zvycha_frontend/features/rooms/data/rooms_repository.dart';
+import 'package:zvycha_frontend/features/rooms/data/rooms_api_service.dart';
+import 'package:zvycha_frontend/features/rooms/presentation/providers/rooms_notifier.dart';
 
 import './core/network/api_client.dart';
 import './core/theme/app_theme.dart';
@@ -31,6 +34,9 @@ Future<void> main() async {
 
   final friendsApi = FriendsApiService(apiClient);
 
+  final roomService = RoomsApiService(apiClient);
+  final roomRepository = RoomsRepository(roomService);
+
   runApp(
     MultiProvider(
       providers: [
@@ -51,6 +57,10 @@ Future<void> main() async {
               listen: false,
             ),
           ),
+        ),
+        ChangeNotifierProvider(
+          create: (_) =>
+              RoomsNotifier(roomRepository)..loadInitialData(),
         ),
       ],
       child: MyApp(router: router),
