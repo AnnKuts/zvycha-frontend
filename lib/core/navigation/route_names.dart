@@ -1,12 +1,12 @@
 enum AppPages {
-  home('/home'),
   loading('/loading'),
   welcome('/welcome'),
   login('/login'),
   signup('/signup'),
   rooms('/rooms'),
   invitations('/invitations'),
-  friends('/friends'),
+  friendsYours('/friends/yours'),
+  friendsFind('/friends/find'),
   settings('/settings');
 
   const AppPages(this.path, {this.parent});
