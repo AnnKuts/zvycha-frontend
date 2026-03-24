@@ -8,9 +8,13 @@ import './core/theme/app_theme.dart';
 import './core/navigation/app_router.dart';
 
 import './features/auth/data/auth_api.dart';
-import 'features/auth/data/auth_repository.dart';
+import './features/auth/data/auth_repository.dart';
 import './features/auth/presentation/providers/auth_form_notifier.dart';
 import './features/auth/presentation/providers/auth_notifier.dart';
+
+import './features/friends/data/friends_api_service.dart';
+import './features/friends/data/friends_repository.dart';
+import './features/friends/presentations/providers/friends_notifier.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,12 +24,12 @@ Future<void> main() async {
 
   final authApi = AuthApi(apiClient);
   final authRepository = AuthRepository(authApi);
-
   final authNotifier = AuthNotifier();
-
   await authNotifier.init();
 
   final router = createRouter(authNotifier);
+
+  final friendsApi = FriendsApiService(apiClient);
 
   runApp(
     MultiProvider(
@@ -34,7 +38,19 @@ Future<void> main() async {
           value: authNotifier,
         ),
         ChangeNotifierProvider<AuthFormNotifier>(
-          create: (_) => AuthFormNotifier(authNotifier, authRepository),
+          create: (_) =>
+              AuthFormNotifier(authNotifier, authRepository),
+        ),
+        Provider<FriendsRepository>(
+          create: (_) => FriendsRepository(friendsApi),
+        ),
+        ChangeNotifierProvider<FriendsNotifier>(
+          create: (context) => FriendsNotifier(
+            Provider.of<FriendsRepository>(
+              context,
+              listen: false,
+            ),
+          ),
         ),
       ],
       child: MyApp(router: router),
